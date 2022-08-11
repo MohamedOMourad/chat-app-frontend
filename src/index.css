@@ -24,3 +24,8 @@ code {
   background-size: cover;
   background-position: center;
 }
+.caht-img {
+  background-image: url(./imgs/chat.jpg);
+  background-size: cover;
+  background-position: center;
+}

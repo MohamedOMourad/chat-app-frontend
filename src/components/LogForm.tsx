@@ -9,7 +9,7 @@ const LogForm = () => {
         initialValues: { email: "", password: "" },
         onSubmit: (values) => {
             console.log(values);
-            navigator('/chat')
+            navigator('/chat/users')
             formik.resetForm();
         },
         validationSchema: Yup.object({
