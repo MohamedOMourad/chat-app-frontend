@@ -1,29 +1,10 @@
-import { useFormik } from "formik";
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
-import { signIn } from "../utils/API";
+import { Link } from "react-router-dom";
+import { LogInFormik } from "../utils/Function";
 
 const LogForm = () => {
-    const navigator = useNavigate();
-    // const dispatch = useDispatch();
-    const formik = useFormik({
-        initialValues: { email: "", password: "" },
-        onSubmit: (values) => {
-            signIn(values.email, values.password);
-            navigator('/chat/users')
-            formik.resetForm();
-        },
-        validationSchema: Yup.object({
-            password: Yup.string()
-                .min(8, "Too Short!")
-                .max(50, "Too Long!")
-                .required("Required"),
-            email: Yup.string().email("Invalid email").required("Required")
-        }),
-    });
-
+    const formik = LogInFormik();
     return (
         <Form className="w-50" onSubmit={formik.handleSubmit}>
             <Form.Group className="mb-3">

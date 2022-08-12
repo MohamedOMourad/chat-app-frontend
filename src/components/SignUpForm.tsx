@@ -1,33 +1,9 @@
 import { Button, Form } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import * as Yup from "yup";
-import { Link, useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import { SignUpFormik } from '../utils/Function';
 
 const SignUpForm = () => {
-    const navigator = useNavigate();
-    const formik = useFormik({
-        initialValues: { firstName: "", lastName: "", email: "", password: "" },
-        onSubmit: (values) => {
-            console.log(values);
-            navigator('/chat');
-            formik.resetForm();
-        },
-        validationSchema: Yup.object({
-            firstName: Yup.string()
-                .min(8, "Too Short!")
-                .max(50, "Too Long!")
-                .required("Required"),
-            lastName: Yup.string().min(8, "Too Short!")
-                .max(50, "Too Long!")
-                .required("Required"),
-            password: Yup.string()
-                .min(8, "Too Short!")
-                .max(50, "Too Long!")
-                .required("Required"),
-            email: Yup.string().email("Invalid email").required("Required")
-        }),
-    });
+    const formik = SignUpFormik();
     return (
         <Form className="w-50" onSubmit={formik.handleSubmit}>
             <Form.Group className="mb-3">

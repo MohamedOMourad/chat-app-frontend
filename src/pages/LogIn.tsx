@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap"
-import LogForm from "../components/LogForm"
+import LogForm from "../components/LogInForm"
 const LogIn = () => {
     return (
         <div>
