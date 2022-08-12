@@ -9,27 +9,27 @@ const UsersCard = () => {
         lastName: "mourad",
         body: "how you doin"
     }, {
-        id: 1,
+        id: 2,
         firstName: "mohamed",
         lastName: "mourad",
         body: "how you doin"
     }, {
-        id: 1,
+        id: 3,
         firstName: "mohamed",
         lastName: "mourad",
         body: "how you doin"
     }, {
-        id: 1,
+        id: 4,
         firstName: "mohamed",
         lastName: "mourad",
         body: "how you doin"
     }, {
-        id: 1,
+        id: 5,
         firstName: "mohamed",
         lastName: "mourad",
         body: "how you doin"
     }, {
-        id: 1,
+        id: 6,
         firstName: "mohamed",
         lastName: "mourad",
         body: "how you doin"
@@ -39,7 +39,7 @@ const UsersCard = () => {
             {
                 users.map(user => {
                     return (
-                        <Link className="text-decoration-none text-dark" to='/chat/groupchat'>
+                        <Link key={user.id} className="text-decoration-none text-dark" to='/chat/groupchat'>
                             <Card className="my-3 mx-5 p-2" style={{ width: '20rem' }} >
                                 <div className="d-flex flex-wrap ">
                                     <Image width='20%' className="rounded-circle" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" />
