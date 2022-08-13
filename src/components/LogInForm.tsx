@@ -22,7 +22,7 @@ const LogForm = () => {
             <Button className="w-100 mb-3 btn btn-secondary btn-rounded" type="submit">
                 Sign in
             </Button>
-            <div className="text-center text-secondary fw-bold">Don't have an account, <Link to='/signup' className="text-decoration-none">sign up</Link></div>
+            <div className="text-center text-secondary fw-bold">Don't have an account <Link to='/signup' className="text-decoration-none"><p>sign up</p></Link></div>
         </Form>
     )
 }

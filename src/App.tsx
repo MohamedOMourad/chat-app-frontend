@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LogIn />} />
           <Route path="/chat" element={<Caht />} >
-            <Route path="users" element={<UsersCard />} />
+            <Route path="users" element={<UsersCard />} />  // /chat/users
             <Route path="groupchat" element={<GroupChat />} />
           </Route>
           <Route path="/signup" element={<SignUp />} />
