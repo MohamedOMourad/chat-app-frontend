@@ -33,7 +33,7 @@ const SignUpForm = () => {
             <Button className="w-100 mb-3 btn btn-secondary btn-rounded" type="submit">
                 Sign up
             </Button>
-            <div className="text-center text-secondary fw-bold">have an account, <Link to='/' className="text-decoration-none">log in</Link></div>
+            <div className="text-center text-secondary fw-bold">have an account <Link to='/' className="text-decoration-none"><p>log in</p></Link></div>
         </Form>
     )
 }
