@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
-import { signIn, signUp } from './API';
+import { SignIn, signUp } from './API';
 
 export const SignUpFormik = () => {
     const navigator = useNavigate();
@@ -31,12 +32,12 @@ export const SignUpFormik = () => {
 }
 
 export const LogInFormik = () => {
+    const dispatch = useDispatch();
     const navigator = useNavigate();
     const formik = useFormik({
         initialValues: { email: "", password: "" },
         onSubmit: (values) => {
-            signIn(values.email, values.password);
-            navigator('/chat/users')
+            SignIn(values.email, values.password, dispatch, navigator);
             formik.resetForm();
         },
         validationSchema: Yup.object({

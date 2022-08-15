@@ -6,7 +6,7 @@ export interface authenticationState {
 }
 
 const initialState: authenticationState = {
-    authenticated: false
+    authenticated: localStorage.getItem('token') ? true : false
 }
 
 export const counterSlice = createSlice({
@@ -18,6 +18,7 @@ export const counterSlice = createSlice({
         },
         isLogout: (state) => {
             state.authenticated = false
+            localStorage.removeItem('token')
         },
     },
 })
@@ -28,7 +29,3 @@ export const { isLogin, isLogout } = counterSlice.actions
 export default counterSlice.reducer
 
 
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
