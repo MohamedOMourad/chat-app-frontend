@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
+import { io } from "socket.io-client";
 
 const Caht = () => {
     return (
@@ -10,7 +12,7 @@ const Caht = () => {
                 </Col>
             </Row>
             <Row className="caht-img" style={{ minHeight: "92vh" }}>
-                <Col  className="d-flex justify-content-start align-items-center">
+                <Col className="d-flex justify-content-start align-items-center">
                     <Outlet />
                 </Col>
             </Row>
