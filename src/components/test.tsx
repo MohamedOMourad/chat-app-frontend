@@ -11,7 +11,7 @@ const Test = () => {
     socket.on('chatMessage', (val) => {
         console.log(val);
     });
-    socket.emit('chatMessage',{});
+    socket.emit('chatMessage', {});
 
     return (
         <div>
