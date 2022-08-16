@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Card, Image } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { RootState } from "../redux/store";
 import { useSelect } from "../pages/Caht";
+import { useAppSelector } from "../redux/hooks";
 const UsersCard = () => {
     const [checked, setChecked] = useState(false);
     const { select } = useSelect();
     console.log(select);
-    const users = useSelector((state: RootState) => state.users.users);
+    const users = useAppSelector((state) => state.users.users);
     return (
         <div>
             {
