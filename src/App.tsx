@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route, Router, Routes } from "react-router-dom";
 import GroupChat from "./components/GroupChat";
 import Protected from "./components/protected";
+import Test from "./components/test";
 import UsersCard from "./components/UsersCard";
 import Caht from "./pages/Caht";
 import LogIn from "./pages/LogIn";
@@ -26,6 +27,7 @@ function App() {
             </Route>
           </Route>
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/test" element={<Test />} />
         </Routes>
       </Container>
     </div >
