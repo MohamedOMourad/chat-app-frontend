@@ -13,18 +13,18 @@ export const counterSlice = createSlice({
     initialState,
     reducers: {
         isLogin: (state) => {
-            state.authenticated = true
+            state.authenticated = true;
         },
         isLogout: (state) => {
-            state.authenticated = false
-            localStorage.removeItem('token')
+            state.authenticated = false;
+            localStorage.removeItem('token');
         },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { isLogin, isLogout } = counterSlice.actions
+export const { isLogin, isLogout } = counterSlice.actions;
 
-export default counterSlice.reducer
+export default counterSlice.reducer;
 
 
