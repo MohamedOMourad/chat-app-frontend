@@ -1,20 +1,26 @@
+import { useEffect } from "react";
 import { Button, Container } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Route, Router, Routes } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router-dom";
+import ChatCard from "./components/ChatCard";
 import GroupChat from "./components/GroupChat";
 import Protected from "./components/protected";
 import UsersCard from "./components/UsersCard";
-import Caht from "./pages/Caht";
+import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import { isLogout } from "./redux/auth";
-import { RootState } from "./redux/store";
-import { getUsers } from "./utils/API";
+import { useAppSelector } from "./redux/hooks";
+import { getUserChats, getUsers } from "./utils/API";
 
 function App() {
-  const isAuthenticated = useSelector((state: RootState) => state.authentication.authenticated);
+  const isAuthenticated = useAppSelector((state) => state.authentication.authenticated);
   const dispatch = useDispatch();
-  getUsers(dispatch);
+
+  useEffect(() => {
+    getUsers(dispatch);
+  });
+
   return (
     <div className="bg-light min-vh-100">
       <Container>
@@ -22,7 +28,8 @@ function App() {
         <Routes>
           <Route path="/" element={<LogIn />} />
           <Route element={<Protected />} >
-            <Route path="/chat" element={<Caht />} >
+            <Route path="/home" element={<Home />} >
+              <Route path="chats" element={<ChatCard />} />
               <Route path="users" element={<UsersCard />} />
               <Route path="groupchat" element={<GroupChat />} />
             </Route>

@@ -14,8 +14,9 @@ export interface User extends Super {
 
 export interface Chat extends Super {
     name: string;
+    imgUrl: string;
     messages: Message[];
-    users: User[]
+    users: User[];
 }
 
 export interface Message extends Super {

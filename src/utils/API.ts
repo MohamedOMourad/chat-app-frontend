@@ -3,19 +3,11 @@ import axios from "axios";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { isLogin } from "../redux/auth";
 import { setUsers } from "../redux/users";
+import { Chat, User } from "../type";
 
 const API = axios.create({ baseURL: 'http://localhost:8000/' });
+const token = JSON.parse(localStorage.getItem("token")!);
 
-export const getUsers = async (dispatch: Dispatch) => {
-    try {
-        const res = await API.get('/user')
-        if (res?.status === 200) {
-            dispatch(setUsers(res.data.data));
-        }
-    } catch (e) {
-        console.log(e)
-    }
-}
 
 export const SignIn = async (email: string, password: string, dispatch: Dispatch, navigator: NavigateFunction) => {
     try {
@@ -23,7 +15,7 @@ export const SignIn = async (email: string, password: string, dispatch: Dispatch
         if (res?.status === 200) {
             localStorage.setItem('token', JSON.stringify(res.data.token))
             dispatch(isLogin());
-            navigator('/chat/users');
+            navigator('/Home/chats');
         }
         else {
             alert(`Error Wrong email or password`);
@@ -34,5 +26,31 @@ export const SignIn = async (email: string, password: string, dispatch: Dispatch
 
 export const signUp = async (body: { firstName: string, lastName: string, email: string, password: string }) => {
     const res = await API.post('/user/signup', body)
-    console.log(res.data.token);
+}
+export const getUsers = async (dispatch: Dispatch) => {
+    try {
+        const res = await API.get('/user')
+        dispatch(setUsers(res.data.data));
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const getUserChats = async (setChats: Function) => {
+    try {
+        const res = await API.get('/chat', { headers: { token } })
+        console.log(res.data.data)
+        setChats(res.data.data)
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const createChats = async (name: string, usersList: number[]) => {
+    try {
+        const data = { name: name, usersList: usersList }
+        const res = await API.post('/chat', data, { headers: { token } },)
+    } catch (e) {
+        console.log(e)
+    }
 }
