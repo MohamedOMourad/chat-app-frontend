@@ -35,21 +35,37 @@ export const getUsers = async (dispatch: Dispatch) => {
         console.log(e)
     }
 }
-
+export const getUserId = async (setUserId: Function) => {
+    try {
+        const res = await API.get('/user/me', { headers: { token } })
+        setUserId(res.data.id)
+    } catch (e) {
+        console.log(e)
+    }
+}
 export const getUserChats = async (setChats: Function) => {
     try {
         const res = await API.get('/chat', { headers: { token } })
-        console.log(res.data.data)
         setChats(res.data.data)
     } catch (e) {
         console.log(e)
     }
 }
 
+
 export const createChats = async (name: string, usersList: number[]) => {
     try {
         const data = { name: name, usersList: usersList }
-        const res = await API.post('/chat', data, { headers: { token } },)
+        const res = await API.post('/chat', data, { headers: { token } })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const getMessages = async (id: number, setMassage: Function) => {
+    try {
+        const res = await API.get(`/message/${id}`, { headers: { token } })
+        setMassage(res.data.data)
     } catch (e) {
         console.log(e)
     }
