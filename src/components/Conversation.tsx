@@ -1,34 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { Message, User } from '../type';
-import * as Yup from "yup";
 import ScrollToBottom from "react-scroll-to-bottom";
-import { useSelector } from "react-redux";
-import { useFormik } from "formik";
 import { getMessages } from '../utils/API';
 import jwtDecode from 'jwt-decode';
+import MessageInput from './MessageInput';
+import { io } from 'socket.io-client';
+
 const Conversation = () => {
     const { id } = useParams()
-    const [messages, setMassage] = useState<Message[]>([]);
-    const token = JSON.parse(localStorage.getItem("token")!);
-    const decodedToken = jwtDecode(token) as User;
-    console.log(decodedToken);
+    const [messages, setMassages] = useState<Message[]>([]);
+
+    const decodedToken = jwtDecode(JSON.parse(localStorage.getItem("token")!)) as User;
+    const socket = io("http://localhost:5001");
+
+    const getaihaga = async () => {
+        await getMessages(+id!, setMassages)
+    }
+
     useEffect(() => {
-        getMessages(+id!, setMassage)
+        socket.emit('joiningRoom', { id })
+        socket.on('recivedMessage', (val) => {
+            setMassages((preMessages) => [...preMessages, val])
+        });
+        getaihaga()
     }, [])
-    const formik = useFormik({
-        initialValues: {
-            body: "",
-        },
-        validationSchema: Yup.object({
-            body: Yup.string().required(),
-        }),
-        onSubmit: async (values) => {
-            // await createMessage(token, parseInt(id!), values)
-            // formik.resetForm()
-        },
-    });
+
 
     return (
         <div className="row d-flex justify-content-center w-100">
@@ -66,21 +63,7 @@ const Conversation = () => {
                                 )
                             })}
                         </ScrollToBottom>
-                        <InputGroup >
-                            <Form.Control
-                                placeholder=""
-                                aria-label="Recipient's username"
-                                aria-describedby="basic-addon2"
-                                name="body"
-                                value={formik.values.body}
-                                onBlur={formik.handleBlur}
-                                onChange={formik.handleChange}
-                            />
-                            <Button variant="dark" id="button-addon2" onClick={() => formik.handleSubmit()}>
-                                SEND
-                            </Button>
-                        </InputGroup>
-
+                        <MessageInput chatId={id!} socket={socket} />
                     </div>
                 </div>
 
