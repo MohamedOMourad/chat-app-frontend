@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+import { io } from "socket.io-client";
 import ChatCard from "./components/ChatCard";
 import Conversation from "./components/Conversation";
 import Protected from "./components/protected";
@@ -19,6 +20,7 @@ function App() {
 
   useEffect(() => {
     getUsers(dispatch);
+
   });
 
   return (
@@ -31,7 +33,7 @@ function App() {
             <Route path="/home" element={<Home />} >
               <Route path="chats" element={<ChatCard />} />
               <Route path="users" element={<UsersCard />} />
-              <Route path="conversation/:id" element={<Conversation />} />
+              <Route path="conversation/:id" element={<Conversation  />} />
             </Route>
           </Route>
           <Route path="/signup" element={<SignUp />} />

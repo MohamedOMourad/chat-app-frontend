@@ -1,6 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { Message } from "yup/lib/types";
 import { isLogin } from "../redux/auth";
 import { setUsers } from "../redux/users";
 import { Chat, User } from "../type";
@@ -66,6 +67,16 @@ export const getMessages = async (id: number, setMassage: Function) => {
     try {
         const res = await API.get(`/message/${id}`, { headers: { token } })
         setMassage(res.data.data)
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const createMessage = async (value: { chatId: string, body: string }) => {
+    try {
+        const data = { id: value.chatId, body: value.body };
+        const res = await API.post(`/message`, data, { headers: { token } })
+        return res.data.message
     } catch (e) {
         console.log(e)
     }
