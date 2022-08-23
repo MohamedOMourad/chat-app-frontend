@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Chat } from '../type'
 
-export interface usersState {
+export interface ChatsState {
     chats: Chat[]
 }
 
-const initialState: usersState = {
+const initialState: ChatsState = {
     chats: []
 }
 
-export const usersSlice = createSlice({
+export const ChatsSlice = createSlice({
     name: 'getChats',
     initialState,
     reducers: {
@@ -19,8 +19,8 @@ export const usersSlice = createSlice({
     },
 })
 
-export const { setChats } = usersSlice.actions;
+export const { setChats } = ChatsSlice.actions;
 
-export default usersSlice.reducer;
+export default ChatsSlice.reducer;
 
 

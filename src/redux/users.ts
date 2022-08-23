@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { User } from '../type'
 
 export interface usersState {
-    users: User[]
+    users: User[],
+    convUsers: number[]
 }
 
 const initialState: usersState = {
-    users: []
+    users: [],
+    convUsers: []
 }
 
 export const usersSlice = createSlice({
@@ -16,10 +18,13 @@ export const usersSlice = createSlice({
         setUsers: (state, action: PayloadAction<User[]>) => {
             state.users = action.payload;
         },
+        setConvUsers: (state, action: PayloadAction<number[]>) => {
+            state.convUsers = action.payload;
+        },
     },
 })
 
-export const { setUsers } = usersSlice.actions;
+export const { setUsers, setConvUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;
 

@@ -1,15 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Card, Image } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Chat } from "../type";
+import { useAppSelector } from "../redux/hooks";
 import { getUserChats } from "../utils/API";
 
-const ChatCard = () => {
-    const [chats, setChats] = useState<Chat[]>([]);
+const ChatList = () => {
+    const dispatch = useDispatch();
+    const chats = useAppSelector((state) => state.chats.chats)
+    const token = useAppSelector((state) => state.authentication.token)
     const navigate = useNavigate()
 
+    const awaitGetUserChats = async () => {
+        await getUserChats(dispatch, token)
+    }
     useEffect(() => {
-        getUserChats(setChats);
+        awaitGetUserChats()
     }, []);
 
     return (
@@ -32,4 +38,4 @@ const ChatCard = () => {
     )
 }
 
-export default ChatCard;
+export default ChatList;

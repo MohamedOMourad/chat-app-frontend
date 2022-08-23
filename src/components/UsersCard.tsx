@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Form, Image, InputGroup } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelect } from "../pages/Home";
 import { useAppSelector } from "../redux/hooks";
-import { createChats } from "../utils/API";
+import { createChats, getUsers } from "../utils/API";
 const UsersCard = () => {
+    const dispatch = useDispatch();
     const users = useAppSelector((state) => state.users.users);
     const { select } = useSelect();
     const [chatName, setChatName] = useState("");
     const [userIds, setUserId] = useState<number[]>([]);
     const navigate = useNavigate();
+    const token = useAppSelector((state) => state.authentication.token)
 
     const addChatUsers = (userId: number) => {
         const match = userIds.find(id => id === userId)
@@ -21,6 +24,10 @@ const UsersCard = () => {
             setUserId([...userIds, userId])
         }
     }
+
+    useEffect(() => {
+        getUsers(dispatch);
+    });
 
     const addChatName = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChatName(event.target.value)
@@ -34,7 +41,7 @@ const UsersCard = () => {
                     value={chatName}
                 />
                 <Button variant="outline-secondary" id="button-addon2"
-                    onClick={() => { createChats(chatName, userIds); navigate("/home/groupchat") }}>
+                    onClick={() => { createChats(chatName, userIds,token); navigate("/home/groupchat") }}>
                     Next
                 </Button>
             </InputGroup>

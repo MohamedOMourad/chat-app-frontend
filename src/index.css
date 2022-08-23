@@ -29,3 +29,8 @@ code {
   background-size: cover;
   background-position: center;
 }
+
+.scrollable{
+  scroll-behavior:smooth;
+  height: 65vh;
+}
