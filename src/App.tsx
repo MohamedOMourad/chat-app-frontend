@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { io } from "socket.io-client";
-import ChatCard from "./components/ChatCard";
+import { io, Socket } from "socket.io-client";
+import ChatCard from "./components/ChatList";
 import Conversation from "./components/Conversation";
 import Protected from "./components/protected";
 import UsersCard from "./components/UsersCard";
@@ -12,16 +12,29 @@ import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import { isLogout } from "./redux/auth";
 import { useAppSelector } from "./redux/hooks";
-import { getUsers } from "./utils/API";
+import { getUserChats, getUserId, getUsers } from "./utils/API";
 
 function App() {
   const isAuthenticated = useAppSelector((state) => state.authentication.authenticated);
+  const token = useAppSelector((state) => state.authentication.token)
   const dispatch = useDispatch();
+  const [socket, setSocket] = useState<Socket>()
+  const [userId, setUserId] = useState<number>();
 
   useEffect(() => {
-    getUsers(dispatch);
+    if (isAuthenticated) { setSocket(io("http://localhost:5001")); }
+  }, []);
 
-  });
+  const awaitUserId = async () => {
+    await getUserId(setUserId, token)
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      socket?.emit('joiningRoom', userId)
+      awaitUserId()
+    }
+  }, []);
 
   return (
     <div className="bg-light min-vh-100">
@@ -33,7 +46,7 @@ function App() {
             <Route path="/home" element={<Home />} >
               <Route path="chats" element={<ChatCard />} />
               <Route path="users" element={<UsersCard />} />
-              <Route path="conversation/:id" element={<Conversation  />} />
+              <Route path="conversation/:id" element={<Conversation socket={socket!} />} />
             </Route>
           </Route>
           <Route path="/signup" element={<SignUp />} />

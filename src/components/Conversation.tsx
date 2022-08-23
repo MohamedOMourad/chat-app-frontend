@@ -1,30 +1,44 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
-import { Message, User } from '../type';
+import { User } from '../type';
 import ScrollToBottom from "react-scroll-to-bottom";
-import { getMessages } from '../utils/API';
+import { getChat, getMessages } from '../utils/API';
 import jwtDecode from 'jwt-decode';
 import MessageInput from './MessageInput';
-import { io } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
+import { useAppSelector } from '../redux/hooks';
+import { useDispatch } from 'react-redux';
+import { addToMessages } from '../redux/messages';
 
-const Conversation = () => {
+const Conversation = ({ socket }: { socket: Socket }) => {
+    const dispatch = useDispatch()
     const { id } = useParams()
-    const [messages, setMassages] = useState<Message[]>([]);
+    const chats = useAppSelector((state) => state.chats.chats);
+    const messages = useAppSelector((state) => state.messages.messages)
+    const [userName, setUserName] = useState('');
+    const [decodedToken, setDecodedToken] = useState<User>();
+    const token = useAppSelector((state) => state.authentication.token)
+    useEffect(() => {
+        setDecodedToken(jwtDecode(token) as User);
+        const chat = chats.find(chat => chat.id === +id!);
+        setUserName(chat?.name!)
+    }, [])
 
-    const decodedToken = jwtDecode(JSON.parse(localStorage.getItem("token")!)) as User;
-    const socket = io("http://localhost:5001");
+    // useEffect(() => {
+    //     getMessages(+id!, dispatch)
+    // }, [])
 
-    const getaihaga = async () => {
-        await getMessages(+id!, setMassages)
+    const awaitMessages = async () => {
+        await getMessages(+id!, dispatch, token)
     }
 
     useEffect(() => {
-        socket.emit('joiningRoom', { id })
-        socket.on('recivedMessage', (val) => {
-            setMassages((preMessages) => [...preMessages, val])
+        socket.on('recivedMessage', (message) => {
+            dispatch(addToMessages(message))
         });
-        getaihaga()
+        awaitMessages()
     }, [])
+
 
 
     return (
@@ -38,12 +52,12 @@ const Conversation = () => {
                         className="card-header d-flex justify-content-between align-items-center p-3 text-dark border-bottom-0"
                         style={{ borderTopLeftRadius: "15px", borderTopRightRadius: "15px" }}>
                         <Link to='/chat/users' className="text-dark fs-5"><i className="fas fa-angle-left"></i></Link>
-                        <p className="mb-0 fw-bold">Live chat</p>
+                        <p className="mb-0 fw-bold">{userName}</p>
                         <Link to='/chat/users' className="text-dark fs-5"><i className="fas fa-times"></i></Link>
                     </div>
 
                     <div className="card-body">
-                        <ScrollToBottom>
+                        <ScrollToBottom className='scrollable'>
                             {messages?.map((message, indx) => {
                                 return (
                                     <div key={indx}>
