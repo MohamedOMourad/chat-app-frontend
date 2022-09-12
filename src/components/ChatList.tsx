@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { Card, Image } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Socket } from "socket.io-client";
 import { useAppSelector } from "../redux/hooks";
 import { getUserChats } from "../utils/API";
 
-const ChatList = () => {
+const ChatList = ({ socket }: { socket: Socket }) => {
     const dispatch = useDispatch();
+    const userId = useAppSelector((state) => state.users.userId);
     const chats = useAppSelector((state) => state.chats.chats)
     const token = useAppSelector((state) => state.authentication.token)
     const navigate = useNavigate()
@@ -18,6 +20,11 @@ const ChatList = () => {
         awaitGetUserChats()
     }, []);
 
+    useEffect(() => {
+        console.log(userId);
+        socket.emit('joiningRoom', +userId)
+    }, [])
+    
     return (
         <div>
             {chats?.map(chat => {

@@ -4,12 +4,10 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import { isLogin } from "../redux/auth";
 import { setChats } from "../redux/chats";
 import { setMessages } from "../redux/messages";
-import { setConvUsers, setUsers } from "../redux/users";
+import { setConvUsers, setUserId, setUsers } from "../redux/users";
 import { User } from "../type";
 
 const API = axios.create({ baseURL: 'http://localhost:8000/' });
-// const token = JSON.parse(localStorage.getItem("token")!) || '';
-
 
 export const SignIn = async (email: string, password: string, dispatch: Dispatch, navigator: NavigateFunction) => {
     try {
@@ -37,10 +35,11 @@ export const getUsers = async (dispatch: Dispatch) => {
         console.log(e)
     }
 }
-export const getUserId = async (setUserId: Function, token: string) => {
+export const getUserId = async (dispatch: Dispatch, token: string) => {
     try {
         const res = await API.get('/user/me', { headers: { token } })
-        setUserId(res.data.id)
+        const data = await res.data.id;
+        dispatch(setUserId(data))
     } catch (e) {
         console.log(e)
     }

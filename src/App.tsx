@@ -18,22 +18,17 @@ function App() {
   const isAuthenticated = useAppSelector((state) => state.authentication.authenticated);
   const token = useAppSelector((state) => state.authentication.token)
   const dispatch = useDispatch();
-  const [socket, setSocket] = useState<Socket>()
-  const [userId, setUserId] = useState<number>();
+  // const [socket, setSocket] = useState<Socket>()
+
+  const socket = io("http://localhost:5001")
+
+
+  // const awaitUserId = async () => {
+  //   await getUserId(dispatch, token)
+  // }
 
   useEffect(() => {
-    if (isAuthenticated) { setSocket(io("http://localhost:5001")); }
-  }, []);
-
-  const awaitUserId = async () => {
-    await getUserId(setUserId, token)
-  }
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      socket?.emit('joiningRoom', userId)
-      awaitUserId()
-    }
+    getUserId(dispatch, token)
   }, []);
 
   return (
@@ -44,7 +39,7 @@ function App() {
           <Route path="/" element={<LogIn />} />
           <Route element={<Protected />} >
             <Route path="/home" element={<Home />} >
-              <Route path="chats" element={<ChatCard />} />
+              <Route path="chats" element={<ChatCard socket={socket!} />} />
               <Route path="users" element={<UsersCard />} />
               <Route path="conversation/:id" element={<Conversation socket={socket!} />} />
             </Route>
