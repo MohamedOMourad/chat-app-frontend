@@ -20,7 +20,8 @@ export const counterSlice = createSlice({
         },
         isLogout: (state) => {
             state.authenticated = false;
-            state.token = ""
+            state.token = "";
+            localStorage.removeItem("auth")
         },
     },
 })

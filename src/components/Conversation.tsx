@@ -5,19 +5,22 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import { getChat, getMessages } from '../utils/API';
 import jwtDecode from 'jwt-decode';
 import MessageInput from './MessageInput';
-import { Socket } from 'socket.io-client';
 import { useAppSelector } from '../redux/hooks';
 import { useDispatch } from 'react-redux';
 import { addToMessages } from '../redux/messages';
+import { Socket } from "socket.io-client";
 
 const Conversation = ({ socket }: { socket: Socket }) => {
     const dispatch = useDispatch()
     const { id } = useParams()
+    const token = useAppSelector((state) => state.authentication.token)
+    const userId = useAppSelector((state) => state.users.userId);
     const chats = useAppSelector((state) => state.chats.chats);
     const messages = useAppSelector((state) => state.messages.messages)
     const [userName, setUserName] = useState('');
     const [decodedToken, setDecodedToken] = useState<User>();
-    const token = useAppSelector((state) => state.authentication.token)
+
+
     useEffect(() => {
         setDecodedToken(jwtDecode(token) as User);
         const chat = chats.find(chat => chat.id === +id!);
@@ -25,7 +28,7 @@ const Conversation = ({ socket }: { socket: Socket }) => {
     }, [])
 
     // useEffect(() => {
-    //     getMessages(+id!, dispatch)
+    //     socket.emit('joiningRoom', +userId)
     // }, [])
 
     const awaitMessages = async () => {
